@@ -1,5 +1,38 @@
 services:
 
+# ██████╗  █████╗ ███████╗ █████╗ ██████╗ ██████╗ 
+# ██╔══██╗██╔══██╗╚══███╔╝██╔══██╗██╔══██╗██╔══██╗
+# ██████╔╝███████║  ███╔╝ ███████║██████╔╝██████╔╝
+# ██╔══██╗██╔══██║ ███╔╝  ██╔══██║██╔══██╗██╔══██╗
+# ██████╔╝██║  ██║███████╗██║  ██║██║  ██║██║  ██║
+# ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    hostname: bazarr
+    environment:
+      PGID: 996
+      POSTGRES_ENABLED: "True"
+      POSTGRES_HOST: 192.168.11.94
+      POSTGRES_PORT: "5432"
+      POSTGRES_USERNAME: pgbazarr
+      POSTGRES_PASSWORD: pgbazarr
+      POSTGRES_DATABASE: bazarr
+    volumes:
+      - ${ARRPATH}Bazarr/config:/config
+      - ${ARRPATH}Radarr/movies:/movies
+      - ${ARRPATH}Sonarr/tvshows:/tv
+      - ${ARRPATH}Bazarr/backups:/data/backups
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+    env_file:
+      - '.env'
+      
+
+                                                
+
 # ██████╗ ██╗   ██╗███████╗██████╗ ███████╗███████╗███████╗██████╗ ██████╗ 
 # ██╔═══██╗██║   ██║██╔════╝██╔══██╗██╔════╝██╔════╝██╔════╝██╔══██╗██╔══██╗
 # ██║   ██║██║   ██║█████╗  ██████╔╝███████╗█████╗  █████╗  ██████╔╝██████╔╝
@@ -194,8 +227,6 @@ services:
     container_name: qbittorrent
     hostname: qbittorrent
     restart: unless-stopped
-    environment:
-      PGID: 996
     labels:
       - "com.centurylinklabs.watchtower.enable=false"
     volumes:
@@ -206,6 +237,7 @@ services:
       - 6881:6881
       - 6881:6881/udp
     environment:
+      - PGID=996
       - WEBUI_PORT=8080
       - TORRENTING_PORT=6881
     healthcheck:
