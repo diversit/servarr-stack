@@ -1,4 +1,23 @@
-services:       
+services:
+
+# ██████╗ ██╗   ██╗███████╗██████╗ ███████╗███████╗███████╗██████╗ ██████╗ 
+# ██╔═══██╗██║   ██║██╔════╝██╔══██╗██╔════╝██╔════╝██╔════╝██╔══██╗██╔══██╗
+# ██║   ██║██║   ██║█████╗  ██████╔╝███████╗█████╗  █████╗  ██████╔╝██████╔╝
+# ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗╚════██║██╔══╝  ██╔══╝  ██╔══██╗██╔══██╗
+# ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║███████║███████╗███████╗██║  ██║██║  ██║
+#  ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝
+
+  overseerr:
+    image: sctx/overseerr:latest
+    container_name: overseerr
+    hostname: overseerr
+    volumes:
+      - ${ARRPATH}Overseerr/config:/app/config
+    ports:
+      - 5055:5055
+    restart: unless-stopped
+    env_file:
+      - '.env'
 
 # ██████╗ ██████╗  ██████╗ ██╗    ██╗██╗      █████╗ ██████╗ ██████╗ 
 # ██╔══██╗██╔══██╗██╔═══██╗██║    ██║██║     ██╔══██╗██╔══██╗██╔══██╗
@@ -6,11 +25,18 @@ services:
 # ██╔═══╝ ██╔══██╗██║   ██║██║███╗██║██║     ██╔══██║██╔══██╗██╔══██╗
 # ██║     ██║  ██║╚██████╔╝╚███╔███╔╝███████╗██║  ██║██║  ██║██║  ██║
 # ╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚══╝╚══╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═
-                              
+ 
   prowlarr:
     image: linuxserver/prowlarr:latest
     container_name: prowlarr
     hostname: prowlarr
+    environment:
+      Prowlarr__Postgres__Host: "192.168.11.94"
+      Prowlarr__Postgres__Port: "5432"
+      Prowlarr__Postgres__User: "pgprowlarr"
+      Prowlarr__Postgres__Password: "pgprowlarr"
+      Prowlarr__Postgres__MainDb: "prowlarr_main"
+      Prowlarr__Postgres__LogDb: "prowlarr_log"
     volumes:
       - ${ARRPATH}Prowlarr/config:/config
       - ${ARRPATH}Prowlarr/backup:/data/Backup
@@ -20,18 +46,26 @@ services:
     restart: unless-stopped
     env_file:
       - '.env'
-      
+ 
 # ███████╗ ██████╗ ███╗   ██╗ █████╗ ██████╗ ██████╗ 
 # ██╔════╝██╔═══██╗████╗  ██║██╔══██╗██╔══██╗██╔══██╗
 # ███████╗██║   ██║██╔██╗ ██║███████║██████╔╝██████╔╝
 # ╚════██║██║   ██║██║╚██╗██║██╔══██║██╔══██╗██╔══██╗
 # ███████║╚██████╔╝██║ ╚████║██║  ██║██║  ██║██║  ██║
-# ╚══════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝                                                 
-      
+# ╚══════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝
+ 
   sonarr:
     image: linuxserver/sonarr:latest
     container_name: sonarr
     hostname: sonarr
+    environment:
+      PGID: 996
+      Sonarr__Postgres__Host: "192.168.11.94"
+      Sonarr__Postgres__Port: "5432"
+      Sonarr__Postgres__User: "pgsonarr"
+      Sonarr__Postgres__Password: "pgsonarr"
+      Sonarr__Postgres__MainDb: "sonarr_main"
+      Sonarr__Postgres__LogDb: "sonarr_log"
     volumes:
       - ${ARRPATH}Sonarr/config:/config
       - ${ARRPATH}Sonarr/backup:/data/Backup
@@ -42,18 +76,27 @@ services:
     restart: unless-stopped
     env_file:
       - '.env'
-      
+ 
 # ██████╗  █████╗ ██████╗  █████╗ ██████╗ ██████╗ 
 # ██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔══██╗
 # ██████╔╝███████║██║  ██║███████║██████╔╝██████╔╝
 # ██╔══██╗██╔══██║██║  ██║██╔══██║██╔══██╗██╔══██╗
 # ██║  ██║██║  ██║██████╔╝██║  ██║██║  ██║██║  ██║
-# ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝                                              
+# ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝
 
   radarr:
     image: linuxserver/radarr:latest
     container_name: radarr
     hostname: radarr
+    environment:
+      PGID: 996
+      Radarr__Postgres__Host: "192.168.11.94"
+      Radarr__Postgres__Port: "5432"
+      Radarr__Postgres__User: "pgradarr"
+      Radarr__Postgres__Password: "pgradarr"
+      Radarr__Postgres__MainDb: "radarr_main"
+      Radarr__Postgres__LogDb: "radarr_log"
+      Radarr__Postgres__CacheDb: "radarr_cache"
     volumes:
       - ${ARRPATH}Radarr/config:/config
       - ${ARRPATH}Radarr/movies:/data/movies
@@ -64,48 +107,57 @@ services:
     restart: unless-stopped
     env_file:
       - '.env'
-      
+ 
 # ██╗     ██╗██████╗  █████╗ ██████╗ ██████╗ 
 # ██║     ██║██╔══██╗██╔══██╗██╔══██╗██╔══██╗
 # ██║     ██║██║  ██║███████║██████╔╝██████╔╝
 # ██║     ██║██║  ██║██╔══██║██╔══██╗██╔══██╗
 # ███████╗██║██████╔╝██║  ██║██║  ██║██║  ██║
 # ╚══════╝╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝
-                                             
+ 
   lidarr:
     image: linuxserver/lidarr:latest
     container_name: lidarr
     hostname: lidarr
+    environment:
+      PGID: 996
+      Lidarr__Postgres__Host: "192.168.11.94"
+      Lidarr__Postgres__Port: "5432"
+      Lidarr__Postgres__User: "pglidarr"
+      Lidarr__Postgres__Password: "pglidarr"
+      Lidarr__Postgres__MainDb: "lidarr_main"
+      Lidarr__Postgres__LogDb: "lidarr_log"
     volumes:
       - ${ARRPATH}Lidarr/config:/config
       - ${ARRPATH}Lidarr/music:/data/musicfolder
+      - ${ARRPATH}Lidarr/backup:/data/Backup
       - ${ARRPATH}Downloads:/downloads
     ports:
       - 8686:8686
     restart: unless-stopped
     env_file:
       - '.env'
-      
+ 
 # ██████╗ ███████╗ █████╗ ██████╗  █████╗ ██████╗ ██████╗ 
 # ██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔══██╗
 # ██████╔╝█████╗  ███████║██║  ██║███████║██████╔╝██████╔╝
 # ██╔══██╗██╔══╝  ██╔══██║██║  ██║██╔══██║██╔══██╗██╔══██╗
 # ██║  ██║███████╗██║  ██║██████╔╝██║  ██║██║  ██║██║  ██║
 # ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝
-                                                                                                                   
-  readarr:
-    image: linuxserver/readarr:develop
-    container_name: readarr
-    hostname: readarr
-    volumes:
-      - ${ARRPATH}Readarr/config:/config
-      - ${ARRPATH}Readarr/books:/data/books
-      - ${ARRPATH}Downloads:/downloads
-    ports:
-      - 8787:8787
-    restart: unless-stopped
-    env_file:
-      - '.env'
+
+#  readarr:
+#    image: linuxserver/readarr:develop
+#    container_name: readarr
+#    hostname: readarr
+#    volumes:
+#      - ${ARRPATH}Readarr/config:/config
+#      - ${ARRPATH}Readarr/books:/data/books
+#      - ${ARRPATH}Downloads:/downloads
+#    ports:
+#      - 8787:8787
+#    restart: unless-stopped
+#    env_file:
+#      - '.env'
 
 # ██╗  ██╗ ██████╗ ███╗   ███╗ █████╗ ██████╗ ██████╗ 
 # ██║  ██║██╔═══██╗████╗ ████║██╔══██╗██╔══██╗██╔══██╗
@@ -113,61 +165,42 @@ services:
 # ██╔══██║██║   ██║██║╚██╔╝██║██╔══██║██╔══██╗██╔══██╗
 # ██║  ██║╚██████╔╝██║ ╚═╝ ██║██║  ██║██║  ██║██║  ██║
 # ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝
-        
+ 
   homarr:
     container_name: homarr
-    image: ghcr.io/ajnart/homarr:latest
+    image: ghcr.io/homarr-labs/homarr:latest
     restart: unless-stopped
+    environment:
+      SECRET_ENCRYPTION_KEY: 97c40e57d63cb49e12f7b8474997820483da6072ae4866e5abeaa38c1fb40a54
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
       - ${ARRPATH}Homarr/configs:/app/data/configs
       - ${ARRPATH}Homarr/icons:/app/public/icons
-      - ${ARRPATH}Homarr/data:/data
+      - ${ARRPATH}Homarr/appdata:/appdata
     ports:
       - '7575:7575'
     env_file:
       - '.env'
 
-#      ██╗███████╗██╗     ██╗  ██╗   ██╗███████╗██╗███╗   ██╗
-#      ██║██╔════╝██║     ██║  ╚██╗ ██╔╝██╔════╝██║████╗  ██║
-#      ██║█████╗  ██║     ██║   ╚████╔╝ █████╗  ██║██╔██╗ ██║
-# ██   ██║██╔══╝  ██║     ██║    ╚██╔╝  ██╔══╝  ██║██║╚██╗██║
-# ╚█████╔╝███████╗███████╗███████╗██║   ██║     ██║██║ ╚████║
-#  ╚════╝ ╚══════╝╚══════╝╚══════╝╚═╝   ╚═╝     ╚═╝╚═╝  ╚═══╝
-     
-  jellyfin:
-    image: linuxserver/jellyfin
-    container_name: jellyfin
-    ports:
-      - '8096:8096/tcp'   # Jellyfin web interface
-      - '7359:7359/udp'   # Network discovery
-      - '1900:1900/udp'   # DLNA port
-    volumes:
-      - ${ARRPATH}Jellyfin/config:/config
-      - ${ARRPATH}Radarr/movies:/data/Movies
-      - ${ARRPATH}Sonarr/tvshows:/data/TVShows
-      - ${ARRPATH}Lidarr/music:/data/Music
-      - ${ARRPATH}Readarr/books:/data/Books
-    env_file:
-      - '.env'
-    restart: unless-stopped
-          
 #  ██████╗ ██████╗ ██╗████████╗████████╗ ██████╗ ██████╗ ██████╗ ███████╗███╗   ██╗████████╗
 # ██╔═══██╗██╔══██╗██║╚══██╔══╝╚══██╔══╝██╔═══██╗██╔══██╗██╔══██╗██╔════╝████╗  ██║╚══██╔══╝
 # ██║   ██║██████╔╝██║   ██║      ██║   ██║   ██║██████╔╝██████╔╝█████╗  ██╔██╗ ██║   ██║   
 # ██║▄▄ ██║██╔══██╗██║   ██║      ██║   ██║   ██║██╔══██╗██╔══██╗██╔══╝  ██║╚██╗██║   ██║   
 # ╚██████╔╝██████╔╝██║   ██║      ██║   ╚██████╔╝██║  ██║██║  ██║███████╗██║ ╚████║   ██║   
-#  ╚══▀▀═╝ ╚═════╝ ╚═╝   ╚═╝      ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝                                                                                          
-                                                                                             
+#  ╚══▀▀═╝ ╚═════╝ ╚═╝   ╚═╝      ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝
+
   qbittorrent:
     image: linuxserver/qbittorrent:latest
     container_name: qbittorrent
     hostname: qbittorrent
     restart: unless-stopped
+    environment:
+      PGID: 996
     labels:
       - "com.centurylinklabs.watchtower.enable=false"
     volumes:
       - ${ARRPATH}qbittorrent/config:/config
-      - ${ARRPATH}Downloads:/downloads
+      - ${ARRPATH}qbittorrent/downloads:/downloads
     ports:
       - 8080:8080
       - 6881:6881
@@ -180,3 +213,6 @@ services:
     env_file:
       - '.env'
 
+networks:
+  default:
+    name: servarr
