@@ -204,6 +204,7 @@ services:
     image: ghcr.io/homarr-labs/homarr:latest
     restart: unless-stopped
     environment:
+      PGID: 109
       SECRET_ENCRYPTION_KEY: 97c40e57d63cb49e12f7b8474997820483da6072ae4866e5abeaa38c1fb40a54
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -231,7 +232,7 @@ services:
       - "com.centurylinklabs.watchtower.enable=false"
     volumes:
       - ${ARRPATH}qbittorrent/config:/config
-      - ${ARRPATH}qbittorrent/downloads:/downloads
+      - ${ARRPATH}Downloads:/downloads
     ports:
       - 8080:8080
       - 6881:6881
