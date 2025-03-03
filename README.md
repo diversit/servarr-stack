@@ -1,3 +1,36 @@
+# Customized *arr stack setup
+
+Based on the [Youtube video](https://youtu.be/1eqPmDvMjLY?feature=shared) and repository 'youtube-39-arr-apps-1-click'.
+Thanks to 'Automation Avenue'.
+
+Customized his setup by:
+- Using a PostgreSQL database (on other LVM).
+- Adding more services: Bazarr, Tautulli, Homarr, Overseerr. Disabled Readarr and removed JellyFin since I'm using Plex.
+- Added a [Caddy Server](https://caddyserver.com) instance to automatically have HTTPS on local domain and allows to access *arr service on a hostname instead of having to remember the ports.
+
+I'm running this setup on an 'old' MacMini running El Capitan (OSX 10.11, Intel Core 2 Due, 8GB memory) which is also running Plex.
+Since this OS does not support the latest docker, it runs an Ubuntu 24.10 in an old VirtualBox (v5.2) which was installed on that machine.
+Files are stored on a external USB drive which folders are shared with the VirtualBox VM. This requires the guest-additions to be installed on the guest VM!
+
+Note that the guest-additions for the VirtualBox 5.2 do NOT work with Ubuntu 24.10. Luckily the latest guest-additions (v7.1) _do_ work with Ubuntu 24.10 and are also compatible with the VirtualBox 5.2 host allowing the host folders to be mapped to the VM.
+
+The VM is configured to use 1 CPU and 4Gb memory and a network in 'bridge' mode allowing it to get it's own ip address.
+Both the MacMini and VM are put in a special VLAN only allowing access to the internet and no further access to any other device on the VLAN or any other VLAN in my LAN (except for the PostgreSQL instance which is a LVM on the same VLAN) since I do not fully trust all these applications.
+I encourage you to do the same.
+
+The setup keeps the VM and host quite busy. It would run smoother on a large machine, but it's quite acceptable.
+The videos streamed by Plex are fluent.
+
+For monitoring, I setup a dashboard in Homarr allowing to see whether all services are up and easy buttons to access each service.
+It also displayes lists of qBitTorrent and Overseerr.
+The Homarr dashboard is added as a 'website' dashboard in my Home Assistant for easy access.
+Also, Home Assistant now has support for Radarr, Sonarr and Overseerr via integrations and these have been added to HA for additional metrics directly in HA, to be used in a HA dashboard later.
+
+The Caddy server is great for creating a HTTPS reverse proxy to all the *arr services.
+In my local DNS an A record has been added for the '*.servarr.home' domain to map to the IP address of the VM.
+Since Caddy does not support the '.home' domain natively as a 'local' domain, each entry in the `Caddyfile` required a `tls internal` setting to force Caddy to use its own local CA.
+The root certificate can easily be exported and added as 'trusted' CA to tbe browser, or for Safari, to the Key Chain.
+ 
 # youtube-39-arr-apps-1-click
 Video 39 - Deploy ARR apps using just 1 command (full set with Jellyfin and qBittorrent !!!)
 
