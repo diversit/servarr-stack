@@ -10,7 +10,7 @@ Customized his setup by:
 
 I'm running this setup on an 'old' MacMini running El Capitan (OSX 10.11, Intel Core 2 Due, 8GB memory) which is also running Plex.
 Since this OS does not support the latest docker, it runs an Ubuntu 24.10 in an old VirtualBox (v5.2) which was installed on that machine.
-Files are stored on a external USB drive which folders are shared with the VirtualBox VM. This requires the guest-additions to be installed on the guest VM!
+All media files are stored on a external USB drive which folders are shared with the VirtualBox VM. This requires the guest-additions to be installed on the guest VM!
 
 Note that the guest-additions for the VirtualBox 5.2 do NOT work with Ubuntu 24.10. Luckily the latest guest-additions (v7.1) _do_ work with Ubuntu 24.10 and are also compatible with the VirtualBox 5.2 host allowing the host folders to be mapped to the VM.
 
@@ -26,7 +26,7 @@ It also displayes lists of qBitTorrent and Overseerr.
 The Homarr dashboard is added as a 'website' dashboard in my Home Assistant for easy access.
 Also, Home Assistant now has support for Radarr, Sonarr and Overseerr via integrations and these have been added to HA for additional metrics directly in HA, to be used in a HA dashboard later.
 
-The Caddy server is great for creating a HTTPS reverse proxy to all the *arr services.
+The Caddy server is great for creating a HTTPS reverse proxy to all the \*arr services so I can use hostnames like `sonarr.servarr.home` or `overseerr.servarr.home` instead of having to use `http://<VM-IP>:<port>/` like described below.
 In my local DNS an A record has been added for the '*.servarr.home' domain to map to the IP address of the VM.
 Since Caddy does not support the '.home' domain natively as a 'local' domain, each entry in the `Caddyfile` required a `tls internal` setting to force Caddy to use its own local CA.
 The root certificate can easily be exported and added as 'trusted' CA to tbe browser, or for Safari, to the Key Chain.
