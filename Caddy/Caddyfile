@@ -1,0 +1,49 @@
+homarr.servarr.home {
+    tls internal
+    encode gzip zstd
+    reverse_proxy homarr:7575
+}
+
+radarr.servarr.home {
+    tls internal
+    encode gzip zstd
+    reverse_proxy radarr:7878
+}
+
+bazarr.servarr.home {
+    tls internal
+    encode gzip zstd
+    reverse_proxy bazarr:6767
+}
+
+sonarr.servarr.home {
+    tls internal
+    encode gzip zstd
+    reverse_proxy sonarr:8989
+}
+
+overseerr.servarr.home {
+    tls internal
+    encode gzip zstd
+    reverse_proxy overseerr:5055
+}
+
+lidarr.servarr.home {
+    tls internal
+    encode gzip zstd
+    reverse_proxy lidarr:8686
+}
+
+qbittorrent.servarr.home,
+torrent.servarr.home {
+    tls internal
+    encode gzip zstd
+    reverse_proxy qbittorrent:8080
+}
+
+prowlarr.servarr.home {
+    tls internal
+    encode gzip zstd
+    reverse_proxy prowlarr:9696
+}
+
